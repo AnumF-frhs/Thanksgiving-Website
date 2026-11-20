@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Great Thanksgiving Dinner Conductor & Gratitude Quilt</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="css/thanks.css" />
+</head>
+<body>
+  <!-- Ambient Drifting Leaves Canvas -->
+  <canvas id="leafCanvas"></canvas>
+
+  <!-- Editorial Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="brand-emblem">
+        <i data-lucide="flame-kindling" class="icon-sm"></i>
+      </div>
+      <div>
+        <span class="brand-kicker">Autumn Almanac &bull; Est. 1621</span>
+        <span class="brand-title">The Dinner Conductor</span>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="#conductor" class="nav-link active">01. Feast Timeline</a>
+      <a href="#quilt" class="nav-link">02. Gratitude Quilt</a>
+      <a href="#alchemy" class="nav-link">03. Leftover Alchemy</a>
+    </div>
+
+    <button id="sosBtn" class="btn btn-sos" title="Emergency Culinary Troubleshooting">
+      <i data-lucide="life-buoy" class="icon-sm"></i>
+      <span>Kitchen SOS</span>
+    </button>
+  </nav>
+
+  <!-- Hero Editorial Header -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="editorial-tag">
+        <span class="dot"></span>
+        Interactive Holiday Orchestrator
+      </div>
+      <h1>Conduct your feast with <em>grace</em>, warmth &amp; zero oven panic.</h1>
+      <p class="hero-subtitle">
+        Reverse-engineer every roast, simmer, and resting period from your target dinner bell.
+        Pin golden gratitude leaves to the family quilt, and alchemize tomorrow’s leftovers.
+      </p>
+      <div class="hero-actions">
+        <a href="#conductor" class="btn btn-primary">
+          <span>Open Feast Conductor</span>
+          <i data-lucide="arrow-down-right" class="icon-sm"></i>
+        </a>
+        <a href="#quilt" class="btn btn-secondary">
+          <i data-lucide="feather" class="icon-sm"></i>
+          <span>Add a Gratitude Leaf</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Live Kitchen Calmness Card -->
+    <div class="hero-card">
+      <div class="calm-header">
+        <div>
+          <span class="card-eyebrow">Kitchen Telemetry</span>
+          <h3>Calmness Index</h3>
+        </div>
+        <span id="calmStatusBadge" class="status-pill">Serene &amp; Ready</span>
+      </div>
+
+      <div class="calm-gauge-wrapper">
+        <svg class="calm-ring" viewBox="0 0 160 160">
+          <circle class="ring-bg" cx="80" cy="80" r="68" />
+          <circle id="calmProgressRing" class="ring-fill" cx="80" cy="80" r="68" stroke-dasharray="427.25" stroke-dashoffset="0" />
+        </svg>
+        <div class="calm-center">
+          <span id="calmPercent">100%</span>
+          <small>Composure</small>
+        </div>
+      </div>
+
+      <div class="calm-metrics">
+        <div class="metric-item">
+          <span class="metric-label">Dinner Bell</span>
+          <strong id="heroTargetTime">5:00 PM</strong>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="metric-label">Active Courses</span>
+          <strong id="heroCourseCount">6 Dishes</strong>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="metric-label">First Prep</span>
+          <strong id="heroFirstStart">12:00 PM</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- =========================================================
+         MODULE 1: THE FEAST CONDUCTOR
+         ========================================================= -->
+    <section id="conductor" class="section-block">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="module-badge badge-conductor" title="Feast Timeline Icon">
+            <i data-lucide="chef-hat" class="module-icon"></i>
+          </div>
+          <div>
+            <span class="section-num">Module I</span>
+            <h2>The Feast Timeline Orchestrator</h2>
+            <p>Set your serving time below. Every prep window, oven slot, and resting period recalculates automatically.</p>
+          </div>
+        </div>
+
+        <div class="time-control-panel">
+          <label for="dinnerTimeInput" class="control-label">
+            <i data-lucide="clock" class="icon-xs"></i>
+            Target Dinner Time
+          </label>
+          <div class="time-input-group">
+            <input type="time" id="dinnerTimeInput" value="17:00" />
+            <button id="addDishToggleBtn" class="btn btn-outline">
+              <i data-lucide="plus" class="icon-xs"></i>
+              Add Dish
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible Add Custom Dish Drawer -->
+      <div id="addDishDrawer" class="drawer hidden">
+        <form id="customDishForm" class="drawer-form">
+          <div class="form-group">
+            <label>Dish Name</label>
+            <input type="text" id="dishName" placeholder="e.g., Maple Glazed Carrots" required />
+          </div>
+          <div class="form-group">
+            <label>Station</label>
+            <select id="dishStation">
+              <option value="oven">Oven</option>
+              <option value="stovetop">Stovetop</option>
+              <option value="prep">Counter / Cold Prep</option>
+              <option value="rest">Resting / Warming</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Duration (mins)</label>
+            <input type="number" id="dishDuration" min="5" max="360" value="35" required />
+          </div>
+          <div class="form-group">
+            <label>Finish Mins Before Dinner</label>
+            <input type="number" id="dishOffset" min="0" max="240" value="0" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Add to Schedule</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Station Heat Allocation Gantt Chart -->
+      <div class="gantt-card">
+        <div class="gantt-header">
+          <div>
+            <h4>Heat &amp; Station Allocation</h4>
+            <p>Visualizing oven &amp; burner overlap so you never run out of rack space.</p>
+          </div>
+          <div class="legend">
+            <span class="legend-item"><i class="swatch oven"></i>Oven</span>
+            <span class="legend-item"><i class="swatch stovetop"></i>Stovetop</span>
+            <span class="legend-item"><i class="swatch prep"></i>Cold Prep</span>
+            <span class="legend-item"><i class="swatch rest"></i>Rest / Hold</span>
+          </div>
+        </div>
+        <div id="ganttContainer" class="gantt-tracks">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Interactive Task Checklist -->
+      <div class="timeline-list-wrapper">
+        <div class="list-toolbar">
+          <span id="completedSummary">0 of 6 steps completed</span>
+          <button id="resetProgressBtn" class="text-btn">Reset Checkmarks</button>
+        </div>
+        <div id="timelineCards" class="timeline-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         MODULE 2: THE AUTUMN GRATITUDE QUILT
+         ========================================================= -->
+    <section id="quilt" class="section-block">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="module-badge badge-quilt" title="Gratitude Quilt Icon">
+            <i data-lucide="leaf" class="module-icon"></i>
+          </div>
+          <div>
+            <span class="section-num">Module II</span>
+            <h2>The Autumn Gratitude Quilt</h2>
+            <p>Inscribe a note of thanks onto a pressed autumn leaf and pin it to our shared digital garland.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="quilt-layout">
+        <!-- Leaf Composer Form -->
+        <div class="composer-card">
+          <h3>Press a New Leaf</h3>
+          <form id="gratitudeForm">
+            <div class="form-group">
+              <label for="guestName">Your Name</label>
+              <input type="text" id="guestName" placeholder="e.g., Aunt Clara" maxlength="28" required />
+            </div>
+
+            <div class="form-group">
+              <label for="gratitudeMessage">What are you thankful for this year?</label>
+              <textarea id="gratitudeMessage" rows="3" placeholder="For Sunday phone calls, warm sourdough, and everyone gathered around this table..." maxlength="150" required></textarea>
+              <div class="char-counter"><span id="charCount">0</span>/150</div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Leaf Species</label>
+                <div class="leaf-picker" id="leafTypePicker">
+                  <button type="button" class="leaf-option active" data-leaf="maple">Maple</button>
+                  <button type="button" class="leaf-option" data-leaf="oak">White Oak</button>
+                  <button type="button" class="leaf-option" data-leaf="ginkgo">Ginkgo</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Autumn Dye</label>
+                <div class="color-picker" id="leafColorPicker">
+                  <button type="button" class="color-dot active" data-color="sienna" style="background:#C85A32;" title="Burnt Sienna"></button>
+                  <button type="button" class="color-dot" data-color="gold" style="background:#D99B26;" title="Harvest Gold"></button>
+                  <button type="button" class="color-dot" data-color="sage" style="background:#3B5E4D;" title="Forest Sage"></button>
+                  <button type="button" class="color-dot" data-color="crimson" style="background:#8E2927;" title="Cranberry Wine"></button>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+              <i data-lucide="sparkles" class="icon-sm"></i>
+              <span>Pin Leaf to the Quilt</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Swaying Garland Display -->
+        <div class="quilt-showcase">
+          <div class="garland-twine"></div>
+          <div id="gratitudeGrid" class="gratitude-grid">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         MODULE 3: LEFTOVER ALCHEMY LAB
+         ========================================================= -->
+    <section id="alchemy" class="section-block">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <div class="module-badge badge-alchemy" title="Leftover Alchemy Icon">
+            <i data-lucide="sparkles" class="module-icon"></i>
+          </div>
+          <div>
+            <span class="section-num">Module III</span>
+            <h2>Leftover Alchemy Lab</h2>
+            <p>Select 2 or 3 Friday-morning fridge remnants to transmute them into an elevated next-day creation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="alchemy-layout">
+        <div class="ingredients-panel">
+          <div class="panel-top">
+            <h4>1. Choose Your Leftovers (Pick 2–3)</h4>
+            <span id="selectedCountBadge" class="badge-muted">0 / 3 Selected</span>
+          </div>
+          <div id="ingredientChips" class="chip-cloud">
+            <!-- Rendered via JS -->
+          </div>
+          <div class="alchemy-actions">
+            <button id="transmuteBtn" class="btn btn-primary" disabled>
+              <i data-lucide="wand-2" class="icon-sm"></i>
+              <span>Transmute Leftovers</span>
+            </button>
+            <button id="clearIngredientsBtn" class="btn btn-secondary">Clear</button>
+          </div>
+        </div>
+
+        <!-- 3D Flip Recipe Result Card -->
+        <div class="recipe-stage">
+          <div id="alchemyCard" class="alchemy-card">
+            <div class="alchemy-front">
+              <div class="alchemy-emblem">
+                <i data-lucide="utensils-crossed" class="icon-lg"></i>
+              </div>
+              <h3>The Alchemist’s Ledger</h3>
+              <p>Select ingredients on the left and press <strong>Transmute Leftovers</strong> to reveal a chef-crafted Friday brunch or dinner recipe.</p>
+            </div>
+            <div class="alchemy-back" id="alchemyResult">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <strong>The Great Thanksgiving Dinner Conductor</strong>
+        <span>Crafted for warm gatherings, crisp autumn air, and stress-free kitchens.</span>
+      </div>
+      <div class="footer-note">
+        Wishing you and yours a bountiful harvest table.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Kitchen SOS Modal -->
+  <div id="sosModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="sos-tag">Culinary Triage</span>
+          <h3>Kitchen SOS &amp; Rapid Fixes</h3>
+        </div>
+        <button id="closeSosBtn" class="icon-btn" aria-label="Close modal">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+      <div class="sos-grid">
+        <div class="sos-item">
+          <h4>🦃 Dry Turkey Breast?</h4>
+          <p>Carve slices onto a warm platter, drizzle generously with hot chicken stock + melted butter, and tent tightly with foil for 8 minutes before serving.</p>
+        </div>
+        <div class="sos-item">
+          <h4>🥣 Lumpy or Thin Gravy?</h4>
+          <p><strong>Lumpy:</strong> Pour through a fine-mesh strainer or blend for 15 seconds. <strong>Too thin:</strong> Whisk 1 tbsp cornstarch with 2 tbsp cold water, then simmer for 2 minutes.</p>
+        </div>
+        <div class="sos-item">
+          <h4>🥔 Gluey Mashed Potatoes?</h4>
+          <p>Fold in warm heavy cream, sour cream, or cream cheese gently with a rubber spatula—never a food processor—and top with crispy shallots to restore texture.</p>
+        </div>
+        <div class="sos-item">
+          <h4>🔥 Oven Bottleneck?</h4>
+          <p>Remember: a 15-lb turkey stays piping hot under foil + a clean kitchen towel for up to <strong>60 minutes</strong>, freeing the entire oven for sides and rolls.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- External JavaScript -->
+  <script src="js/thanks.js"></script>
+</body>
+</html>
